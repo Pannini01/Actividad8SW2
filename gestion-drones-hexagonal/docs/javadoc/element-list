@@ -1,0 +1,7 @@
+com.proyecto.drones.aplicacion.puerto.entrada
+com.proyecto.drones.aplicacion.puerto.salida
+com.proyecto.drones.aplicacion.servicio
+com.proyecto.drones.dominio.modelo
+com.proyecto.drones.infraestructura.persistencia
+com.proyecto.drones.ui
+com.proyecto.drones.vista

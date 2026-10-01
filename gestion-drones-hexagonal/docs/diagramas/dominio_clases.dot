@@ -1,0 +1,62 @@
+digraph DominioClases {
+  graph [rankdir=TB, bgcolor="white", pad="0.25", nodesep="0.55", ranksep="0.65", splines=ortho, fontname="Helvetica", labelloc="t", label="Diagrama de Clases - Dominio/Modelo", fontsize=20];
+  node [shape=plain, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8];
+
+  Dron [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B><I>Dron</I></B></TD></TR>
+      <TR><TD ALIGN="LEFT">- id : String<BR ALIGN="LEFT"/>- serial : String<BR ALIGN="LEFT"/>- modelo : String<BR ALIGN="LEFT"/>- fabricante : String<BR ALIGN="LEFT"/>- peso : double<BR ALIGN="LEFT"/>- piloto : Piloto<BR ALIGN="LEFT"/>- sensores : List&lt;Sensor&gt;</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getTipo() : String<BR ALIGN="LEFT"/>+ getters/setters</TD></TR>
+    </TABLE>
+  >];
+
+  Agricultura [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B>Agricultura</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- capacidadTanque : double</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getTipo() : String<BR ALIGN="LEFT"/>+ getCapacidadTanque() : double<BR ALIGN="LEFT"/>+ setCapacidadTanque(double)</TD></TR>
+    </TABLE>
+  >];
+
+  Vigilancia [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B>Vigilancia</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- deteccionTermica : boolean</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getTipo() : String<BR ALIGN="LEFT"/>+ isDeteccionTermica() : boolean<BR ALIGN="LEFT"/>+ setDeteccionTermica(boolean)</TD></TR>
+    </TABLE>
+  >];
+
+  Piloto [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B>Piloto</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- id : String<BR ALIGN="LEFT"/>- nombre : String<BR ALIGN="LEFT"/>- licencia : String<BR ALIGN="LEFT"/>- telefono : String</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getters/setters</TD></TR>
+    </TABLE>
+  >];
+
+  Sensor [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B>Sensor</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- id : String<BR ALIGN="LEFT"/>- tipo : String<BR ALIGN="LEFT"/>- fabricante : String</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getters/setters</TD></TR>
+    </TABLE>
+  >];
+
+  Mision [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#e5e7eb"><B>Mision</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- id : String<BR ALIGN="LEFT"/>- nombre : String<BR ALIGN="LEFT"/>- ubicacion : String<BR ALIGN="LEFT"/>- fecha : LocalDate<BR ALIGN="LEFT"/>- drones : List&lt;Dron&gt;</TD></TR>
+      <TR><TD ALIGN="LEFT">+ getters/setters</TD></TR>
+    </TABLE>
+  >];
+
+  Agricultura -> Dron [arrowhead=empty, label="hereda"];
+  Vigilancia -> Dron [arrowhead=empty, label="hereda"];
+  Dron -> Piloto [dir=both, arrowtail=odiamond, arrowhead=none, label="0..1 piloto"];
+  Dron -> Sensor [dir=both, arrowtail=odiamond, arrowhead=none, label="0..* sensores"];
+  Mision -> Dron [dir=both, arrowtail=odiamond, arrowhead=none, label="0..* drones"];
+
+  {rank=same; Agricultura; Vigilancia}
+  {rank=same; Piloto; Sensor; Mision}
+}

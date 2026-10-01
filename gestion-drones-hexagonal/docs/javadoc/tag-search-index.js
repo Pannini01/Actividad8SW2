@@ -1,0 +1,1 @@
+tagSearchIndex = [{"l":"Constant Field Values","h":"","u":"constant-values.html"},{"l":"Gestión de Drones - Arquitectura Hexagonal","h":"Overview","d":"Section","u":"index.html#gesti-n-de-drones---arquitectura-hexagonal-heading"}];updateSearchResults();

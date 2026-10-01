@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Gestión de Drones - Arquitectura Hexagonal</title></head>
+<body>
+<h1>Gestión de Drones - Arquitectura Hexagonal</h1>
+<p>Aplicación Java 17 + JavaFX + PostgreSQL organizada con Ports and Adapters.</p>
+<p>La solución separa cada caso de uso mediante un puerto de entrada y un servicio de aplicación individual. El puerto de salida <code>DronRepository</code> es implementado por <code>DronPostgresAdapter</code>.</p>
+<p><code>vista.App</code> funciona como composition root: crea el adaptador de salida, construye los servicios y los inyecta en el adaptador de entrada JavaFX <code>ui.DronController</code>.</p>
+<p>Los únicos patrones de diseño intencionales son Adapter para PostgreSQL y Singleton para la conexión JDBC.</p>
+</body>
+</html>

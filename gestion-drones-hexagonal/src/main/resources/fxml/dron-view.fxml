@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.proyecto.drones.ui.DronController"
+            styleClass="raiz">
+    <top>
+        <VBox spacing="8" styleClass="cabecera">
+            <padding><Insets top="18" right="22" bottom="18" left="22"/></padding>
+            <Label text="Gestión de Drones" styleClass="titulo"/>
+            <Label text="Arquitectura Hexagonal · Adapter PostgreSQL · Singleton de conexión" styleClass="subtitulo"/>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox spacing="10" prefWidth="330" styleClass="panel-formulario">
+            <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+            <Label text="Datos del dron" styleClass="seccion"/>
+            <TextField fx:id="txtId" promptText="ID"/>
+            <TextField fx:id="txtSerial" promptText="Serial"/>
+            <TextField fx:id="txtModelo" promptText="Modelo"/>
+            <TextField fx:id="txtFabricante" promptText="Fabricante"/>
+            <TextField fx:id="txtPeso" promptText="Peso (kg)"/>
+            <ComboBox fx:id="cmbTipo" maxWidth="Infinity"/>
+            <TextField fx:id="txtCapacidadTanque" promptText="Capacidad tanque (L)"/>
+            <CheckBox fx:id="chkDeteccionTermica" text="Detección térmica"/>
+            <Separator/>
+            <Button text="Crear" onAction="#crear" maxWidth="Infinity" styleClass="boton-principal"/>
+            <Button text="Actualizar" onAction="#actualizar" maxWidth="Infinity"/>
+            <Button text="Listar uno por ID" onAction="#listarUno" maxWidth="Infinity"/>
+            <Button text="Eliminar" onAction="#eliminar" maxWidth="Infinity" styleClass="boton-peligro"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="12" styleClass="panel-tabla">
+            <padding><Insets top="18" right="20" bottom="18" left="20"/></padding>
+            <HBox spacing="8">
+                <Button text="Listar muchos" onAction="#listarMuchos"/>
+            </HBox>
+            <TableView fx:id="tablaDrones" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="110"/>
+                    <TableColumn fx:id="colSerial" text="Serial" prefWidth="115"/>
+                    <TableColumn fx:id="colModelo" text="Modelo" prefWidth="120"/>
+                    <TableColumn fx:id="colFabricante" text="Fabricante" prefWidth="120"/>
+                    <TableColumn fx:id="colPeso" text="Peso" prefWidth="80"/>
+                    <TableColumn fx:id="colTipo" text="Tipo" prefWidth="115"/>
+                    <TableColumn fx:id="colDetalle" text="Detalle" prefWidth="140"/>
+                </columns>
+            </TableView>
+            <Label fx:id="lblEstado" text="Listo." styleClass="estado" wrapText="true"/>
+        </VBox>
+    </center>
+</BorderPane>
