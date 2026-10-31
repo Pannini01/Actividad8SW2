@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.proyecto.drones.ui.DronController"
+            styleClass="raiz">
+    <top>
+        <VBox spacing="8" styleClass="cabecera">
+            <padding><Insets top="18" right="22" bottom="18" left="22"/></padding>
+            <Label text="Gestión de Drones" styleClass="titulo"/>
+            <Label text="Arquitectura Hexagonal · PostgreSQL · Observer · Chain · Strategy · Command" styleClass="subtitulo"/>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox spacing="10" prefWidth="310" styleClass="panel-formulario">
+            <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+            <Label text="Datos del dron" styleClass="seccion"/>
+            <TextField fx:id="txtId" promptText="ID"/>
+            <TextField fx:id="txtSerial" promptText="Serial"/>
+            <TextField fx:id="txtModelo" promptText="Modelo"/>
+            <TextField fx:id="txtFabricante" promptText="Fabricante"/>
+            <TextField fx:id="txtPeso" promptText="Peso (kg)"/>
+            <ComboBox fx:id="cmbTipo" maxWidth="Infinity"/>
+            <TextField fx:id="txtCapacidadTanque" promptText="Capacidad tanque (L)"/>
+            <CheckBox fx:id="chkDeteccionTermica" text="Detección térmica"/>
+            <Separator/>
+            <Button text="Crear" onAction="#crear" maxWidth="Infinity" styleClass="boton-principal"/>
+            <Button text="Actualizar" onAction="#actualizar" maxWidth="Infinity"/>
+            <Button text="Listar uno por ID" onAction="#listarUno" maxWidth="Infinity"/>
+            <Button text="Eliminar" onAction="#eliminar" maxWidth="Infinity" styleClass="boton-peligro"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="12" styleClass="panel-tabla">
+            <padding><Insets top="18" right="16" bottom="18" left="16"/></padding>
+            <HBox spacing="8">
+                <Button text="Listar muchos" onAction="#listarMuchos"/>
+                <Button text="Suscribir dron" onAction="#suscribirDron" styleClass="boton-observer"/>
+                <Button text="Desuscribir dron" onAction="#desuscribirDron"/>
+                <Label fx:id="lblSuscripcion" text="Drones suscritos: 0" styleClass="contador"/>
+            </HBox>
+            <TableView fx:id="tablaDrones" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="90"/>
+                    <TableColumn fx:id="colSerial" text="Serial" prefWidth="105"/>
+                    <TableColumn fx:id="colModelo" text="Modelo" prefWidth="110"/>
+                    <TableColumn fx:id="colFabricante" text="Fabricante" prefWidth="110"/>
+                    <TableColumn fx:id="colPeso" text="Peso" prefWidth="70"/>
+                    <TableColumn fx:id="colTipo" text="Tipo" prefWidth="105"/>
+                    <TableColumn fx:id="colDetalle" text="Detalle" prefWidth="130"/>
+                </columns>
+            </TableView>
+            <Label fx:id="lblEstado" text="Listo." styleClass="estado" wrapText="true"/>
+        </VBox>
+    </center>
+
+    <right>
+        <TabPane prefWidth="405" tabClosingPolicy="UNAVAILABLE" styleClass="panel-funcionalidades">
+            <tabs>
+                <Tab text="Clima">
+                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                        <content>
+                            <VBox spacing="11" styleClass="panel-clima">
+                                <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                                <Label text="Validación climática" styleClass="seccion"/>
+                                <Label text="Ciudad" styleClass="etiqueta"/>
+                                <ComboBox fx:id="cmbCiudad" maxWidth="Infinity"/>
+                                <Button text="Consultar clima" onAction="#consultarClima" maxWidth="Infinity" styleClass="boton-clima"/>
+                                <Separator/>
+                                <GridPane hgap="12" vgap="10">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="125"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+                                    <Label text="Temperatura:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblTemperatura" text="--" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="valor-clima"/>
+                                    <Label text="Humedad:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblHumedad" text="--" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="valor-clima"/>
+                                    <Label text="Viento:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblViento" text="--" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="valor-clima"/>
+                                    <Label text="Presión:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblPresion" text="--" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="valor-clima"/>
+                                    <Label text="Visibilidad:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblVisibilidad" text="--" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="valor-clima"/>
+                                </GridPane>
+                                <Separator/>
+                                <Label text="Resultado Chain of Responsibility" styleClass="etiqueta"/>
+                                <Label fx:id="lblClimaResultado"
+                                       text="Seleccione una ciudad y consulte el clima."
+                                       wrapText="true" styleClass="resultado-clima"/>
+                                <Label text="Reglas" styleClass="etiqueta"/>
+                                <Label text="• Temperatura: 0–40 °C&#10;• Humedad: ≤ 85 %&#10;• Viento: ≤ 40 km/h&#10;• Presión: 950–1050 hPa&#10;• Visibilidad: ≥ 5 km"
+                                       wrapText="true" styleClass="reglas"/>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Strategy">
+                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                        <content>
+                            <VBox spacing="10" styleClass="panel-strategy">
+                                <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                                <Label text="Consumo energético · Strategy" styleClass="seccion"/>
+                                <Label text="1. Seleccione un dron en la tabla." wrapText="true"/>
+                                <Label fx:id="lblDronRuta" text="Dron: --" styleClass="etiqueta" wrapText="true"/>
+                                <Separator/>
+                                <Label text="2. Cargue el archivo JSON de ruta." wrapText="true"/>
+                                <Button text="Cargar JSON de ruta" onAction="#seleccionarArchivoRuta" maxWidth="Infinity" styleClass="boton-strategy"/>
+                                <Label fx:id="lblArchivoRuta" text="Ningún archivo seleccionado" wrapText="true" styleClass="archivo-ruta"/>
+                                <Separator/>
+                                <Label text="3. Seleccione estrategia."/>
+                                <ComboBox fx:id="cmbEstrategia" maxWidth="Infinity"/>
+                                <Button text="Calcular consumo" onAction="#calcularConsumo" maxWidth="Infinity" styleClass="boton-strategy"/>
+                                <Separator/>
+                                <Label text="Origen" styleClass="etiqueta"/>
+                                <Label fx:id="lblOrigenRuta" text="--" wrapText="true"/>
+                                <Label text="Destino" styleClass="etiqueta"/>
+                                <Label fx:id="lblDestinoRuta" text="--" wrapText="true"/>
+                                <GridPane hgap="10" vgap="9">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="125"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+                                    <Label text="Distancia:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblDistanciaRuta" text="--" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="valor-strategy"/>
+                                    <Label text="Estrategia:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblEstrategiaRuta" text="--" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="valor-strategy"/>
+                                    <Label text="Consumo:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                    <Label fx:id="lblConsumoRuta" text="--" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="resultado-strategy" wrapText="true"/>
+                                </GridPane>
+                                <Label text="Ahorro = km × 0.5 · Normal = km × 1 · Alto Rendimiento = km × 1.5"
+                                       wrapText="true" styleClass="reglas"/>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Command">
+                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                        <content>
+                            <VBox spacing="10" styleClass="panel-command">
+                                <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                                <Label text="Tareas de misión · Command" styleClass="seccion"/>
+                                <Label text="1. Seleccione un dron en la tabla y fíjelo para la misión." wrapText="true"/>
+                                <Button text="Seleccionar dron para misión" onAction="#seleccionarDronMision" maxWidth="Infinity" styleClass="boton-command"/>
+                                <Label fx:id="lblDronMision" text="Dron de misión: --" wrapText="true" styleClass="etiqueta"/>
+                                <Separator/>
+                                <Label text="2. Agregue tareas en el orden deseado." wrapText="true"/>
+                                <ComboBox fx:id="cmbTareaCommand" maxWidth="Infinity"/>
+                                <Button text="Agregar tarea" onAction="#agregarTareaCommand" maxWidth="Infinity" styleClass="boton-command"/>
+                                <Label text="Secuencia programada" styleClass="etiqueta"/>
+                                <ListView fx:id="listaTareasCommand" prefHeight="150"/>
+                                <HBox spacing="8">
+                                    <Button text="Ejecutar tareas" onAction="#ejecutarTareasCommand" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="boton-command"/>
+                                    <Button text="Limpiar" onAction="#limpiarTareasCommand"/>
+                                </HBox>
+                                <Label text="Resultados" styleClass="etiqueta"/>
+                                <TextArea fx:id="txtResultadosCommand" editable="false" wrapText="true" prefRowCount="7"/>
+                                <Label text="Los comandos son wrappers: ejecutar() delega en DroneOperacionService y no recibe Dron directamente."
+                                       wrapText="true" styleClass="reglas"/>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </right>
+</BorderPane>

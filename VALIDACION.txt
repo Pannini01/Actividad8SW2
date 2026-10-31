@@ -1,0 +1,92 @@
+VALIDACIÓN - ENTREGA STRATEGY + COMMAND (ESTRUCTURA CORREGIDA)
+===========================================================
+
+Base: Proyecto_Drones_Strategy_Command_Actualizado.zip
+Java objetivo: 17
+
+1. Restricción de modelo
+------------------------
+Las seis clases originales se conservaron sin cambios byte por byte:
+- Dron.java
+- Agricultura.java
+- Vigilancia.java
+- Sensor.java
+- Mision.java
+- Piloto.java
+
+Las únicas subcarpetas nuevas de esta entrega se encuentran dentro de dominio/modelo:
+- modelo.strategy
+- modelo.command
+
+2. Regla de servicios
+----------------------
+Todos los servicios están directamente en:
+    com.proyecto.drones.aplicacion.servicio
+
+Incluye:
+- WeatherNotificationService
+- CalcularConsumoService
+- DroneOperacionService
+- ProgramadorTareas
+- servicios CRUD existentes
+
+No existen subpaquetes aplicacion.servicio.strategy, aplicacion.servicio.command ni aplicacion.servicio.weather.
+
+3. Strategy
+-----------
+Modelo:
+- modelo.strategy.PuntoGeografico
+- modelo.strategy.ConsumoStrategy
+- modelo.strategy.AhorroStrategy
+- modelo.strategy.NormalStrategy
+- modelo.strategy.AltoRendimientoStrategy
+
+Clases fuera del modelo, reutilizando paquetes existentes:
+- aplicacion.puerto.entrada.CalcularConsumoUseCase
+- aplicacion.servicio.CalcularConsumoService
+- aplicacion.dto.ConsumoResult
+- aplicacion.puerto.salida.RutaLoaderPort
+- aplicacion.puerto.salida.DistanciaGeograficaPort
+- infraestructura.JsonRutaLoader
+- infraestructura.HaversineUtil
+
+Prueba de humo con ruta de ejemplo:
+- distancia Haversine: ~12.511 km
+- Ahorro: ~6.255
+- Normal: ~12.511
+- Alto Rendimiento: ~18.766
+
+4. Command
+----------
+Modelo:
+- modelo.command.DroneCommand
+- modelo.command.TomarFotografiaCommand
+- modelo.command.EscanearZonaCommand
+- modelo.command.MedirTemperaturaCommand
+
+Clases fuera del modelo, reutilizando paquetes existentes:
+- aplicacion.puerto.entrada.ProgramarTareasUseCase
+- aplicacion.servicio.DroneOperacionService (Receiver)
+- aplicacion.servicio.ProgramadorTareas (Invoker)
+- aplicacion.dto.ResultadoTarea
+
+Corrección del profesor validada:
+- DroneCommand.ejecutar() NO recibe Dron.
+- Ninguna clase de modelo.command importa Dron.
+- Los comandos concretos delegan en DroneOperacionService.
+- ProgramadorTareas ejecuta en el orden registrado.
+
+5. UI / FXML
+------------
+- Se conserva CRUD + Clima + Strategy + Command.
+- Strategy carga JSON, muestra origen/destino, distancia y consumo.
+- Command permite registrar tareas, ejecutarlas en orden y mostrar resultados.
+
+6. Compilación
+--------------
+- Fuentes principales: compilación Java 17 correcta usando stubs locales de JavaFX.
+- Fuentes de test: compilación correcta usando stubs locales de JUnit.
+- Prueba de humo Strategy + Command: OK.
+
+Nota: Maven no está instalado en el entorno de generación. En Eclipse ejecutar:
+    mvn clean javafx:run

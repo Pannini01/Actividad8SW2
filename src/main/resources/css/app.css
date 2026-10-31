@@ -1,0 +1,69 @@
+.raiz {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: #f6f7f9;
+}
+.cabecera {
+    -fx-background-color: #202630;
+}
+.titulo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.subtitulo {
+    -fx-text-fill: #d7dce2;
+}
+.panel-formulario, .panel-tabla, .panel-clima, .panel-strategy, .panel-command {
+    -fx-background-color: white;
+}
+.panel-funcionalidades {
+    -fx-border-color: #e1e5ea;
+    -fx-border-width: 0 0 0 1;
+}
+.panel-clima, .panel-strategy, .panel-command {
+    -fx-background-color: white;
+}
+.seccion {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.etiqueta {
+    -fx-font-weight: bold;
+}
+.boton-principal, .boton-observer, .boton-clima, .boton-strategy, .boton-command {
+    -fx-font-weight: bold;
+}
+.boton-peligro {
+    -fx-font-weight: bold;
+}
+.estado {
+    -fx-font-weight: bold;
+}
+.contador {
+    -fx-padding: 6 0 0 8;
+    -fx-font-weight: bold;
+}
+.valor-clima, .valor-strategy {
+    -fx-font-weight: bold;
+}
+.resultado-clima, .resultado-strategy {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10;
+    -fx-background-color: #f3f5f7;
+    -fx-background-radius: 6;
+}
+.resultado-strategy {
+    -fx-background-color: #fff6df;
+}
+.archivo-ruta {
+    -fx-text-fill: #555c66;
+    -fx-font-style: italic;
+}
+.reglas {
+    -fx-text-fill: #555c66;
+    -fx-line-spacing: 3px;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #eef1f5;
+}

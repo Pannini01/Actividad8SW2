@@ -1,0 +1,55 @@
+ESTRUCTURA DE PAQUETES - ENTREGA STRATEGY + COMMAND
+===================================================
+
+REGLA DE LA ENTREGA
+- Las seis clases principales del modelo NO se modifican.
+- Las únicas subcarpetas nuevas de esta entrega están dentro de dominio/modelo:
+  * dominio/modelo/strategy
+  * dominio/modelo/command
+- Todos los servicios están directamente en aplicacion/servicio.
+- Fuera del modelo se reutilizan paquetes existentes; no se crean subpaquetes por Strategy o Command.
+
+com.proyecto.drones
+├── aplicacion
+│   ├── dto
+│   │   ├── ConsumoResult.java
+│   │   ├── ResultadoTarea.java
+│   │   └── weather/                     (entrega anterior)
+│   ├── puerto
+│   │   ├── entrada
+│   │   │   ├── CalcularConsumoUseCase.java
+│   │   │   ├── ProgramarTareasUseCase.java
+│   │   │   └── weather/                 (entrega anterior)
+│   │   └── salida
+│   │       ├── RutaLoaderPort.java
+│   │       ├── DistanciaGeograficaPort.java
+│   │       └── weather/                 (entrega anterior)
+│   └── servicio
+│       ├── CrearDronServicio.java
+│       ├── ActualizarDronServicio.java
+│       ├── ListarDronServicio.java
+│       ├── ListarDronesServicio.java
+│       ├── EliminarDronServicio.java
+│       ├── WeatherNotificationService.java
+│       ├── CalcularConsumoService.java
+│       ├── DroneOperacionService.java
+│       └── ProgramadorTareas.java
+├── dominio
+│   └── modelo
+│       ├── Dron.java                    (sin modificar)
+│       ├── Agricultura.java             (sin modificar)
+│       ├── Vigilancia.java              (sin modificar)
+│       ├── Sensor.java                  (sin modificar)
+│       ├── Mision.java                  (sin modificar)
+│       ├── Piloto.java                  (sin modificar)
+│       ├── weather/                     (entrega anterior)
+│       ├── chain/                       (entrega anterior)
+│       ├── strategy/                    (NUEVA)
+│       └── command/                     (NUEVA)
+├── infraestructura
+│   ├── JsonRutaLoader.java
+│   ├── HaversineUtil.java
+│   ├── persistencia/                    (existente)
+│   └── weather/                         (entrega anterior)
+├── ui
+└── vista
