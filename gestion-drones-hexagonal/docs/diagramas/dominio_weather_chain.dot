@@ -1,0 +1,51 @@
+digraph UML {
+  graph [rankdir=TB, bgcolor="white", pad="0.3", nodesep="0.45", ranksep="0.65", fontname="Arial"];
+  node [shape=record, style="filled", fillcolor="#F7F8FA", color="#202020", fontname="Arial", fontsize=10];
+  edge [color="#202020", fontname="Arial", fontsize=9];
+
+  Dron [label="{Dron|- id : String\l- serial : String\l- modelo : String\l- fabricante : String\l- peso : double\l- piloto : Piloto\l- sensores : List\<Sensor\>\l|+ getTipo() : String\l+ getters/setters\l}"];
+  Agricultura [label="{Agricultura|- capacidadTanque : double\l|+ getTipo() : String\l+ getCapacidadTanque() : double\l+ setCapacidadTanque(double) : void\l}"];
+  Vigilancia [label="{Vigilancia|- deteccionTermica : boolean\l|+ getTipo() : String\l+ isDeteccionTermica() : boolean\l+ setDeteccionTermica(boolean) : void\l}"];
+  Piloto [label="{Piloto|- id : String\l- nombre : String\l- licencia : String\l- telefono : String\l|+ getters/setters\l}"];
+  Sensor [label="{Sensor|- id : String\l- tipo : String\l- fabricante : String\l|+ getters/setters\l}"];
+  Mision [label="{Mision|- id : String\l- nombre : String\l- ubicacion : String\l- fecha : LocalDate\l- drones : List\<Dron\>\l|+ getters/setters\l}"];
+
+  subgraph cluster_weather {
+    label="Observer - Clima   paquete: modelo.weather";
+    color="#2E9D42"; style="dashed,rounded"; penwidth=1.5;
+    Weather [fillcolor="#F3FFF3", label="{Weather|- temperatura : double\l- humedad : int\l- velocidadViento : double\l- presionAtmosferica : int\l- visibilidad : double\l|+ getters/setters\l}"];
+    WeatherObserver [fillcolor="#F3FFF3", label="{WeatherObserver|- observers : List\<Dron\>\l|+ addObserver(dron : Dron) : void\l+ removeObserver(dron : Dron) : void\l+ notifyObservers(weather : Weather) : void\l}"];
+  }
+
+  subgraph cluster_chain {
+    label="Chain of Responsibility - Validación de Clima   paquete: modelo.chain";
+    color="#E67E22"; style="dashed,rounded"; penwidth=1.5;
+    WeatherHandler [fillcolor="#FFF7EC", label="{WeatherHandler|# nextHandler : WeatherHandler\l|+ setNext(next : WeatherHandler) : void\l+ handle(weather : Weather) : String\l# handleNext(weather : Weather) : String\l}"];
+    TemperatureHandler [fillcolor="#FFF7EC", label="{TemperatureHandler|+ handle(weather : Weather) : String\l}"];
+    HumidityHandler [fillcolor="#FFF7EC", label="{HumidityHandler|+ handle(weather : Weather) : String\l}"];
+    WindHandler [fillcolor="#FFF7EC", label="{WindHandler|+ handle(weather : Weather) : String\l}"];
+    PressureHandler [fillcolor="#FFF7EC", label="{PressureHandler|+ handle(weather : Weather) : String\l}"];
+    VisibilityHandler [fillcolor="#FFF7EC", label="{VisibilityHandler|+ handle(weather : Weather) : String\l}"];
+  }
+
+  Agricultura -> Dron [arrowhead="empty", label="hereda"];
+  Vigilancia -> Dron [arrowhead="empty", label="hereda"];
+  Dron -> Piloto [dir=both, arrowtail="odiamond", arrowhead="none", label="0..1 piloto"];
+  Dron -> Sensor [dir=both, arrowtail="odiamond", arrowhead="none", label="0..* sensores"];
+  Mision -> Dron [dir=both, arrowtail="odiamond", arrowhead="none", label="0..* drones"];
+
+  WeatherObserver -> Dron [dir=both, arrowtail="odiamond", arrowhead="open", label="0..* drones suscritos"];
+  WeatherObserver -> Weather [style="dashed", arrowhead="open", label="utiliza"];
+  WeatherHandler -> Weather [style="dashed", arrowhead="open", label="valida"];
+
+  TemperatureHandler -> WeatherHandler [arrowhead="empty"];
+  HumidityHandler -> WeatherHandler [arrowhead="empty"];
+  WindHandler -> WeatherHandler [arrowhead="empty"];
+  PressureHandler -> WeatherHandler [arrowhead="empty"];
+  VisibilityHandler -> WeatherHandler [arrowhead="empty"];
+
+  {rank=same; Agricultura; Vigilancia;}
+  {rank=same; Piloto; Sensor; Mision;}
+  {rank=same; WeatherObserver; WeatherHandler;}
+  {rank=same; TemperatureHandler; HumidityHandler; WindHandler; PressureHandler; VisibilityHandler;}
+}

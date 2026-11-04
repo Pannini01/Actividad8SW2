@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Gestión de Drones - Arquitectura Hexagonal</title></head>
+<body>
+<h1>Gestión de Drones - Arquitectura Hexagonal</h1>
+<p>Aplicación académica Java 17 + JavaFX + PostgreSQL organizada con Ports and Adapters.</p>
+<p>Conserva CRUD, Observer, Chain of Responsibility, Strategy y Command.</p>
+<p><strong>State:</strong> administra el ciclo APAGADO → EN ESPERA → VOLANDO → ATERRIZANDO mediante <code>DroneState</code>, sus estados concretos y un <code>Context</code> interno, sin modificar la entidad <code>Dron</code>.</p>
+<p><strong>Mediator:</strong> <code>MissionCoordinator</code> centraliza NavigationSystem, SensorSystem, BatterySystem y CommunicationSystem; los componentes no se comunican directamente y la funcionalidad no utiliza el CRUD de drones.</p>
+<p>Las seis clases originales del modelo permanecen sin modificaciones.</p>
+<p>Las pruebas JUnit incluyen pruebas unitarias y pruebas de integración ejecutables mediante Maven Surefire/Failsafe.</p>
+<p><strong>State:</strong> DroneState funciona como wrapper abstracto de Dron; no existe DroneStateContext.</p>
+</body>
+</html>

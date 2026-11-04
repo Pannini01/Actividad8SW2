@@ -1,0 +1,65 @@
+digraph ArquitecturaHexagonal {
+  graph [rankdir=TB, bgcolor="white", pad="0.35", nodesep="0.55", ranksep="0.65",
+         splines=polyline, fontname="Helvetica", labelloc="t",
+         label="Arquitectura Hexagonal - Gestion de Drones (Java 17)", fontsize=20];
+  node [shape=box, style="rounded", fontname="Helvetica", fontsize=10, margin="0.18,0.11"];
+  edge [fontname="Helvetica", fontsize=9, arrowsize=0.8];
+
+  subgraph cluster_vista {
+    label="package vista";
+    style="rounded"; color="#64748b"; penwidth=1.3;
+    app [label="App\n<<Composition Root>>\n\nCrea Adapter y servicios\nCarga FXML\nInyecta Use Cases\nMuestra Stage"];
+  }
+
+  subgraph cluster_ui {
+    label="package ui";
+    style="rounded"; color="#64748b"; penwidth=1.3;
+    ui [label="DronController\n<<Driving Adapter - JavaFX UI>>\n\nsetUseCases(...)\ncargarInicial()\ncrear / actualizar / listar / eliminar"];
+  }
+
+  subgraph cluster_core {
+    label="NUCLEO HEXAGONAL";
+    style="rounded"; color="#1f2937"; penwidth=2.0;
+
+    subgraph cluster_aplicacion {
+      label="package aplicacion";
+      style="rounded"; color="#94a3b8"; penwidth=1.2;
+
+      entrada [label="puerto.entrada\n<<Input Ports>>\n\nCrearDronUseCase\nActualizarDronUseCase\nListarDronUseCase\nListarDronesUseCase\nEliminarDronUseCase"];
+
+      servicios [label="servicio\n<<Application Services>>\n\nCrearDronServicio\nActualizarDronServicio\nListarDronServicio\nListarDronesServicio\nEliminarDronServicio"];
+
+      salida [label="puerto.salida\n<<Output Port>>\n\nDronRepository\n\ncrear() / actualizar()\nlistarUno() / listarMuchos()\neliminar()"];
+    }
+
+    subgraph cluster_dominio {
+      label="package dominio/modelo";
+      style="rounded"; color="#94a3b8"; penwidth=1.2;
+      dominio [label="Dron\nAgricultura\nVigilancia\nSensor\nMision\nPiloto", shape=hexagon, width=2.3, height=1.15];
+    }
+  }
+
+  subgraph cluster_infra {
+    label="package infraestructura/persistencia";
+    style="rounded"; color="#64748b"; penwidth=1.3;
+    adapter [label="DronPostgresAdapter\n<<Driven Adapter / Adapter>>\n\nimplements DronRepository\nJDBC / SQL"];
+    singleton [label="PostgresConnection\n<<Singleton>>\n\ngetInstance()\ngetConnection()\nConserva una unica Connection"];
+    config [label="ConfiguracionEnv\n\nDB_URL\nDB_USER\nDB_PASSWORD"];
+    {rank=same; singleton; config}
+  }
+
+  bd [label="PostgreSQL\nBase de datos", shape=cylinder, style="solid"];
+
+  app -> ui [label="carga FXML e inyecta Use Cases"];
+  ui -> entrada [label="invoca"];
+  entrada -> servicios [label="contratos implementados por"];
+  servicios -> salida [label="dependen de"];
+  servicios -> dominio [label="usan entidades", constraint=false];
+  salida -> adapter [label="implementado por"];
+  adapter -> singleton [label="obtiene Connection"];
+  singleton -> config [style=dashed, label="lee configuracion", constraint=false];
+  singleton -> bd [label="JDBC"];
+
+  app -> servicios [style=dashed, color="#64748b", label="wiring: crea servicios", constraint=false];
+  app -> adapter [style=dashed, color="#64748b", label="wiring: crea Adapter", constraint=false];
+}
