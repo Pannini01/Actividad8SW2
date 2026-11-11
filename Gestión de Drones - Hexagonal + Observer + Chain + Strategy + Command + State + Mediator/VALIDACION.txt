@@ -1,0 +1,119 @@
+VALIDACIÓN - ENTREGA STATE + MEDIATOR (STATE COMO WRAPPER)
+========================================================
+
+1. RESTRICCIÓN DEL MODELO
+-------------------------
+Las seis clases principales conservan exactamente los mismos SHA-256 de la entrega anterior:
+
+Dron.java        3b913bc8639d7d8722f56e6cecdee42589dbe801eeedd5d58c76a56e5f01dcbb
+Agricultura.java ff081327d18741fb445e2ea496d1c9449a41b68edcd2d76bcb51c5c513aa4d21
+Vigilancia.java  c0161be4469a5f592fcc9b65b91962e0827d0f719c93798ccfae9cfd53fc2fb1
+Sensor.java      a0e944b172baac7800f1b0b36f0121bcbec3ec97af6016720199659fe91228bf
+Mision.java      94e49d0852519a5ae860358781446946ebce2904cc2dd4ba85f01c1511a3c463
+Piloto.java      88423ddd4629c1086ebba834ba245335d9921f5ee422648b302d0234398260cb
+
+2. STATE
+--------
+- DroneState es una clase abstracta que funciona como wrapper directo de Dron.
+- DroneState mantiene la referencia protected final Dron dron.
+- No existe DroneStateContext.java.
+- No existe Context interno dentro de DroneState.
+- La primera participación de un dron crea OffState(dron), por lo que inicia APAGADO.
+- Los estados concretos son OffState, ReadyState, FlyingState y LandingState.
+- Cada estado valida sus propias operaciones.
+- Las transiciones válidas crean el siguiente wrapper usando la misma instancia de Dron.
+- Ciclo validado en ejecución:
+  APAGADO -> EN ESPERA -> VOLANDO -> ATERRIZANDO -> EN ESPERA.
+- EN ESPERA -> APAGADO también está permitido.
+- Una transición inválida se rechaza y conserva el mismo estado.
+- DroneStateService está directamente en aplicacion/servicio.
+- ManageDroneStateUseCase está directamente en aplicacion/puerto/entrada.
+
+3. MEDIATOR
+-----------
+- DroneMediator está en aplicacion/mediator.
+- MissionCoordinator implementa DroneMediator.
+- components contiene NavigationSystem, SensorSystem, BatterySystem y CommunicationSystem.
+- Los componentes no se comunican directamente entre sí.
+- MissionService está directamente en aplicacion/servicio.
+- ExecuteMissionUseCase está directamente en aplicacion/puerto/entrada.
+- Mediator no referencia DronRepository, DronPostgresAdapter ni PostgresConnection.
+- La coordinación se detiene si BatterySystem informa energía insuficiente.
+
+4. JAVAFX / FXML
+----------------
+- DronController conserva la pestaña State y la pestaña Mediator.
+- State muestra el dron seleccionado y el estado operativo actualizado.
+- Mediator muestra la bitácora de coordinación sin usar el CRUD.
+- La API de ManageDroneStateUseCase no cambió, por lo que la UI sigue desacoplada de la implementación State.
+- dron-view.fxml parseado correctamente.
+- Todos los fx:id tienen campo correspondiente en DronController.
+- Todas las acciones onAction tienen método correspondiente en DronController.
+
+5. COMPILACIÓN Y PRUEBAS TÉCNICAS
+---------------------------------
+- Fuentes Java completas: compilación Java --release 17 OK usando stubs JavaFX para validar la capa UI.
+- Fuentes de pruebas: compilación Java --release 17 con stubs JUnit OK.
+- Smoke test State wrapper ejecutado: STATE_WRAPPER_SMOKE_OK.
+- Smoke test Mediator ejecutado: MEDIATOR_SMOKE_OK.
+- Se valida que el mismo objeto Dron se conserva a través de las transiciones.
+
+6. JUNIT
+--------
+Unitarias (*Test):
+- DroneStateTest
+- MissionCoordinatorTest
+- WeatherChainTest
+- StrategyConsumoTest
+- CommandPatternTest
+- JsonRutaLoaderTest
+
+Integración (*IT):
+- DroneStateServiceIT
+- MissionServiceIT
+
+pom.xml incluye:
+- maven-surefire-plugin para unitarias.
+- maven-failsafe-plugin para integration-test / verify.
+
+Comandos esperados en un entorno con Maven:
+  mvn test
+  mvn verify
+
+7. JAVADOC / README
+-------------------
+- README.md actualizado con DroneState como wrapper directo de Dron.
+- docs/README_STATE_MEDIATOR.md actualizado.
+- src/main/javadoc/overview.html actualizado.
+- docs/javadoc/index.html regenerado desde el código actualizado.
+
+8. NOTA DEL ENTORNO DE GENERACIÓN
+---------------------------------
+Maven no está instalado en el entorno donde se preparó este ZIP. Por ello no se ejecutó
+mvn test / mvn verify / mvn javafx:run aquí. La validación se realizó con javac --release 17,
+stubs de JavaFX/JUnit y smoke tests ejecutables del núcleo.
+
+
+AJUSTE UI / MEDIATOR
+- Todos los botones usan peso de fuente normal mediante la regla global .button.
+- Mediator requiere un dron seleccionado en la tabla antes de iniciar la coordinación.
+- El resultado Mediator termina mostrando serial, ID y tipo del dron seleccionado.
+- Esta selección no introduce dependencias CRUD dentro de MissionCoordinator/MissionService.
+
+9. REFACTOR DE DUPLICACIÓN - SONARQUBE
+--------------------------------------
+- Se eliminó el bloque duplicado de validación entre CrearDronServicio y ActualizarDronServicio.
+- La validación común quedó centralizada en DronValidator, sin modificar las entidades de dominio.
+- ListarDronServicio y EliminarDronServicio reutilizan la validación/normalización de ID.
+- Se centralizó la infraestructura HTTP repetida de GeoApiClient y OpenMeteoClient en HttpGetClient.
+- GeoApiClient y OpenMeteoClient conservan sus responsabilidades de construir las URI específicas de cada API.
+- Se agregó DronValidationTest para cubrir creación/actualización con el validador compartido.
+- Revisión estática interna: no quedan coincidencias normalizadas de 70 o más tokens entre archivos de producción.
+- El porcentaje exacto de SonarQube debe confirmarse ejecutando nuevamente el análisis en la instancia local del estudiante.
+
+10. VALIDACIÓN TÉCNICA DE ESTA REFACTORIZACIÓN
+----------------------------------------------
+- Fuentes Java completas: compilación Java --release 17 OK usando stubs JavaFX.
+- Fuentes de pruebas, incluido DronValidationTest: compilación Java --release 17 OK usando stubs JUnit.
+- Smoke test de creación/actualización + State + Mediator: REFACTOR_SMOKE_OK.
+- Las seis clases principales del modelo permanecen sin cambios.
